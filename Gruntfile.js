@@ -13,13 +13,15 @@ module.exports = function (grunt) {
       highcharts: {
         src: 'highcharts-legend-yaxis.js',
         options: {
-          config: '.jsbeautifyrc'
+          config: '.jsbeautifyrc',
+          mode: 'VERIFY_ONLY'
         }
       },
       gruntfile: {
         src: 'Gruntfile.js',
         options: {
-          config: '.jsbeautifyrc'
+          config: '.jsbeautifyrc',
+          mode: 'VERIFY_ONLY'
         }
       }
     },

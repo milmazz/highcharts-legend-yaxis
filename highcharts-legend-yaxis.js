@@ -5,7 +5,7 @@
  *
  * @author Milton Mazzarri <milmazz@gmail.com>
  * @copyright Milton Mazzarri 2014
- * @version 0.1
+ * @version 0.1.1
  */
 (function (H) {
   "use strict";
@@ -14,9 +14,9 @@
    * @function positionRects
    *
    * @param {Object} obj - Represents the chart container.
-   * @todo Delete or reposition the 'yaxis-group' after the endResize event.
+   * @param {Object} yAxisGroup - Container of the rects per y-Axis.
    */
-  var positionRects = function (obj) {
+  var positionRects = function (obj, yAxisGroup) {
     var chart = obj,
       renderer = chart.renderer,
       yAxis = chart.yAxis,
@@ -26,8 +26,9 @@
         width: 15,
         height: 3,
         radius: 0
-      },
-      yAxisGroup = renderer.g("yaxis-group").add();
+      };
+
+    yAxisGroup.add();
 
     H.each(yAxis, function (yAxis) {
       var opposite = yAxis.opposite === undefined ? false : yAxis.opposite,
@@ -62,11 +63,15 @@
     // Run the original proceed method
     proceed.apply(this, Array.prototype.slice.call(arguments, 1));
 
-    var chart = this;
-    positionRects(chart);
+    var chart = this,
+      group = chart.renderer.g("yaxis-group");
+
+    positionRects(chart, group);
 
     H.addEvent(chart, "endResize", function () {
-      positionRects(chart);
+      group.destroy(); // Destroy the container and free up memory
+      group = chart.renderer.g("yaxis-group");
+      positionRects(chart, group);
     });
 
   });

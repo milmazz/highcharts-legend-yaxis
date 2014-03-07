@@ -1,6 +1,6 @@
 {
   "name": "highcharts-legend-yaxis",
-  "version": "0.1.1",
+  "version": "0.2",
   "description": "Show legend boxes bellow yAxis",
   "main": "highcharts-legend-yaxis.js",
   "repository": {

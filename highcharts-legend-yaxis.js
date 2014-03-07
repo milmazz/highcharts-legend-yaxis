@@ -64,15 +64,26 @@
     proceed.apply(this, Array.prototype.slice.call(arguments, 1));
 
     var chart = this,
-      group = chart.renderer.g("yaxis-group");
+      group = chart.renderer.g("yaxis-group"),
+      series = chart.series,
+      events = {
+        "endResize": chart,
+        "hide": series,
+        "show": series
+      },
+      redraw = function () {
+        group.destroy(); // Destroy the container and free up memory
+        group = chart.renderer.g("yaxis-group");
+        positionRects(chart, group);
+      };
 
     positionRects(chart, group);
 
-    H.addEvent(chart, "endResize", function () {
-      group.destroy(); // Destroy the container and free up memory
-      group = chart.renderer.g("yaxis-group");
-      positionRects(chart, group);
-    });
+    for (var ev in events) {
+      if (events.hasOwnProperty(ev)) {
+        H.addEvent(events[ev], ev, redraw);
+      }
+    }
 
   });
 }(Highcharts));

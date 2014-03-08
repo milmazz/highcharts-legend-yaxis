@@ -31,8 +31,8 @@
     yAxisGroup.add();
 
     H.each(yAxis, function (yAxis) {
-      var opposite = yAxis.opposite === undefined ? false : yAxis.opposite,
-        showRects = yAxis.showRects === undefined ? true : yAxis.showRects;
+      var opposite = (yAxis.opposite === undefined) ? false : yAxis.opposite,
+        showRects = (yAxis.showRects === undefined) ? true : yAxis.showRects;
 
       if (showRects) {
         for (var i = 0; i < yAxis.series.length; i++) {

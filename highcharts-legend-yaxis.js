@@ -5,7 +5,7 @@
  *
  * @author Milton Mazzarri <milmazz@gmail.com>
  * @copyright Milton Mazzarri 2014
- * @version 0.1.1
+ * @version 0.2.1
  */
 (function (H) {
   "use strict";
@@ -32,7 +32,7 @@
 
     H.each(yAxis, function (yAxis) {
       var opposite = (yAxis.opposite === undefined) ? false : yAxis.opposite,
-        showRects = (yAxis.showRects === undefined) ? true : yAxis.showRects;
+        showRects = (yAxis.options.showRects === undefined) ? true : yAxis.options.showRects;
 
       if (showRects) {
         for (var i = 0; i < yAxis.series.length; i++) {

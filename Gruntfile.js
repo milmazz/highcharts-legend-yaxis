@@ -1,10 +1,12 @@
 module.exports = function (grunt) {
+  // load all grunt tasks matching the ['grunt-*', '@*/grunt-*'] patterns
+  require('load-grunt-tasks')(grunt)
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    jshint: {
+    eslint: {
       options: {
-        jshintrc: '.jshintrc'
+        configFile: '.eslintrc'
       },
       highcharts: 'highcharts-legend-yaxis.js',
       gruntfile: 'Gruntfile.js'
@@ -23,6 +25,13 @@ module.exports = function (grunt) {
           config: '.jsbeautifyrc',
           mode: 'VERIFY_ONLY'
         }
+      },
+      'git-pre-commit': {
+        src: ['Gruntfile.js', 'highcharts-legend-yaxis.js'],
+        options: {
+          config: '.jsbeautifyrc',
+          mode: 'VERIFY_ONLY'
+        }
       }
     },
     uglify: {
@@ -30,31 +39,27 @@ module.exports = function (grunt) {
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
           '/* <%= grunt.template.today("yyyy-mm-dd") %> */\n',
         separator: ',',
-        compress: true,
+        compress: true
       },
       highcharts: {
         src: 'highcharts-legend-yaxis.js',
         dest: 'highcharts-legend-yaxis.min.js'
       }
     }
-  });
-
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-jsbeautifier');
+  })
 
   // Tasks
   grunt.registerTask('default', [
     'jsbeautifier:highcharts',
-    'jshint:highcharts'
-  ]);
+    'eslint:highcharts'
+  ])
   grunt.registerTask('gruntfile', [
     'jsbeautifier:gruntfile',
-    'jshint:gruntfile'
-  ]);
+    'eslint:gruntfile'
+  ])
   grunt.registerTask('dist', [
     'jsbeautifier:highcharts',
-    'jshint:highcharts',
+    'eslint:highcharts',
     'uglify:highcharts'
-  ]);
-};
+  ])
+}

@@ -49,10 +49,10 @@
             rect.y = yAxis.top + yAxis.height + baselineOffset + itemMarginTop * (i - skipped + 1) + (yAxis.options.showRectsY || 0)
 
             yAxis.series[i].yaxisRect = renderer.rect(rect.x,
-              rect.y,
-              rect.width,
-              rect.height,
-              rect.radius)
+                rect.y,
+                rect.width,
+                rect.height,
+                rect.radius)
               .attr({
                 fill: yAxis.series[i].color,
                 zIndex: 8
@@ -78,26 +78,26 @@
       'redraw': chart
     }
     var redraw = function () {
-        removeEvents()
-        group.destroy() // Destroy the container and free up memory
-        chart.yaxisGroup = group = chart.renderer.g('yaxis-group')
-        positionRects(chart, group)
-        addEvents()
-      }
+      removeEvents()
+      group.destroy() // Destroy the container and free up memory
+      chart.yaxisGroup = group = chart.renderer.g('yaxis-group')
+      positionRects(chart, group)
+      addEvents()
+    }
     var addEvents = function () {
-        for (var ev in events) {
-          if (events.hasOwnProperty(ev)) {
-            H.addEvent(events[ev], ev, redraw)
-          }
+      for (var ev in events) {
+        if (events.hasOwnProperty(ev)) {
+          H.addEvent(events[ev], ev, redraw)
         }
       }
+    }
     var removeEvents = function () {
-        for (var ev in events) {
-          if (events.hasOwnProperty(ev)) {
-            H.removeEvent(events[ev], ev, redraw)
-          }
+      for (var ev in events) {
+        if (events.hasOwnProperty(ev)) {
+          H.removeEvent(events[ev], ev, redraw)
         }
       }
+    }
 
     redraw()
   })

@@ -35,14 +35,20 @@
         showRects = (yAxis.options.showRects === undefined) ? true : yAxis.options.showRects;
 
       if (showRects) {
+        var skipped = 0;
         for (var i = 0; i < yAxis.series.length; i++) {
+          if (!(yAxis.series[i].options.showRects === undefined || yAxis.series[i].options.showRects)) {
+            skipped++;
+            continue;
+          }
+
           if (yAxis.series[i].visible) {
-            rect.x = yAxis.left + yAxis.offset;
+            rect.x = yAxis.left + yAxis.offset + (yAxis.options.showRectsX || 0);
             rect.x = (opposite) ? rect.x + yAxis.width : rect.x - rect.width;
 
-            rect.y = yAxis.top + yAxis.height + baselineOffset + itemMarginTop * (i + 1);
+            rect.y = yAxis.top + yAxis.height + baselineOffset + itemMarginTop * (i - skipped + 1) + (yAxis.options.showRectsY || 0);
 
-            renderer.rect(rect.x,
+            yAxis.series[i].yaxisRect = renderer.rect(rect.x,
               rect.y,
               rect.width,
               rect.height,
@@ -69,21 +75,32 @@
       events = {
         "endResize": chart,
         "hide": series,
-        "show": series
+        "show": series,
+        "redraw": chart
       },
       redraw = function () {
+        removeEvents();
         group.destroy(); // Destroy the container and free up memory
-        group = chart.renderer.g("yaxis-group");
+        chart.yaxisGroup = group = chart.renderer.g("yaxis-group");
         positionRects(chart, group);
+        addEvents();
+      },
+      addEvents = function () {
+        for (var ev in events) {
+          if (events.hasOwnProperty(ev)) {
+            H.addEvent(events[ev], ev, redraw);
+          }
+        }
+      },
+      removeEvents = function () {
+        for (var ev in events) {
+          if (events.hasOwnProperty(ev)) {
+            H.removeEvent(events[ev], ev, redraw);
+          }
+        }
       };
 
-    positionRects(chart, group);
-
-    for (var ev in events) {
-      if (events.hasOwnProperty(ev)) {
-        H.addEvent(events[ev], ev, redraw);
-      }
-    }
+    redraw()
 
   });
 }(Highcharts));
